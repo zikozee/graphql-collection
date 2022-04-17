@@ -13,6 +13,9 @@
 - this helps store all argument used in all graphql query as a map
 - control click in(FakeBookDataResolver)  to see 
 
+## EXTENDED SCALAR TYPES
+- you define only once and also add mapping to POM or build.gradle
+- see **https://github.com/graphql-java/graphql-java-extended-scalars** for more extended types
  
 ## DISABLING GRAPH[I]QL endpoint
 ```yaml

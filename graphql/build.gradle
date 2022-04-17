@@ -40,4 +40,7 @@ tasks.named('test') {
 
 generateJava {
     packageName = 'com.zikozee.graphql.generated'
+    typeMapping = ["Date"          : "java.time.LocalDate",
+                   "NonNegativeInt": "java.lang.Integer",
+                   "Url"           : "java.net.URL"]
 }

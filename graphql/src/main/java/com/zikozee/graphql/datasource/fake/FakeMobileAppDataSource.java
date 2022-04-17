@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ public class FakeMobileAppDataSource {
     public static final List<MobileApp> MOBILE_APP_LIST = new ArrayList<>();
 
     @PostConstruct
-    private void postCentral(){
+    private void postCentral() throws MalformedURLException {
         for (int i = 0; i < 20; i++) {
             var addresses = new ArrayList<Address>();
             var author = Author.newBuilder().addresses(addresses)
@@ -37,11 +39,12 @@ public class FakeMobileAppDataSource {
                     .name(faker.app().name())
                     .author(author).version(faker.app().version())
                     .platform(randomMobileAppPlatform())
-//                    .appId(UUID.randomUUID().toString())
-//                    .releaseDate(LocalDate.now().minusDays(faker.random().nextInt(365)))
-//                    .downloaded(faker.number().numberBetween(1, 1_500_000))
-//                    .homepage(new URL("https://" + faker.internet().url()))
-//                    .category(MobileAppCategory.values()[faker.random().nextInt(MobileAppCategory.values().length)])
+                    .appId(UUID.randomUUID().toString())
+                    .releaseDate(LocalDate.now().minusDays(faker.random().nextInt(365)))
+                    .downloaded(faker.number().numberBetween(1, 1_500_000))
+                    .homepage(new URL("https://" + faker.internet().url()))
+                    .id2(faker.number().randomNumber())
+                    .category(MobileAppCategory.values()[faker.random().nextInt(MobileAppCategory.values().length)])
                     .build();
 
             for (int j = 0; j < ThreadLocalRandom.current().nextInt(1, 3); j++) {

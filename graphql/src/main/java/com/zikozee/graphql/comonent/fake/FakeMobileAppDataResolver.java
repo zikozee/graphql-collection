@@ -11,6 +11,7 @@ import com.zikozee.graphql.generated.types.MobileAppFilter;
 import graphql.schema.DataFetchingEnvironment;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,7 +34,7 @@ public class FakeMobileAppDataResolver {
 
     @DgsQuery(field = "mobileApps")
     public List<MobileApp> getMobileApps(@InputArgument(collectionType = MobileAppFilter.class)
-                                             Optional<MobileAppFilter> mobileAppFilter) {
+                                         Optional<MobileAppFilter> mobileAppFilter) {
         if (mobileAppFilter.isEmpty()) return FakeMobileAppDataSource.MOBILE_APP_LIST;
 
         return FakeMobileAppDataSource.MOBILE_APP_LIST.stream()
@@ -45,7 +46,10 @@ public class FakeMobileAppDataResolver {
         var isAppMatch = StringUtils.containsIgnoreCase(mobileApp.getName(),
                 StringUtils.defaultIfBlank(mobileAppFilter.getName(), StringUtils.EMPTY))
                 && StringUtils.containsIgnoreCase(mobileApp.getVersion(),
-                StringUtils.defaultIfBlank(mobileAppFilter.getVersion(), StringUtils.EMPTY));
+                StringUtils.defaultIfBlank(mobileAppFilter.getVersion(), StringUtils.EMPTY))
+                && mobileApp.getReleaseDate().isAfter(
+                Optional.ofNullable(mobileAppFilter.getReleaseAfter()).orElse(LocalDate.MIN)
+        ) && mobileApp.getDownloaded() >= Optional.ofNullable(mobileAppFilter.getMinimumDownloaded()).orElse(0);
 
         if (!isAppMatch) return false;
 
@@ -53,7 +57,13 @@ public class FakeMobileAppDataResolver {
                 && !mobileApp.getPlatform().contains(mobileAppFilter.getPlatform().toLowerCase()))
             return false;
 
-        return mobileAppFilter.getAuthor() == null || StringUtils.containsIgnoreCase(mobileApp.getAuthor().getName(),
-                StringUtils.defaultIfBlank(mobileAppFilter.getAuthor().getName(), StringUtils.EMPTY));
+        if (mobileAppFilter.getAuthor() != null && !StringUtils.containsIgnoreCase(mobileApp.getAuthor().getName(),
+                StringUtils.defaultIfBlank(mobileAppFilter.getAuthor().getName(), StringUtils.EMPTY)))
+            return false;
+
+        if (mobileAppFilter.getCategory() != null && mobileApp.getCategory() != mobileAppFilter.getCategory())
+            return false;
+
+        return true;
     }
 }
