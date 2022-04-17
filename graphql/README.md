@@ -16,7 +16,22 @@
 ## EXTENDED SCALAR TYPES
 - you define only once and also add mapping to POM or build.gradle
 - see **https://github.com/graphql-java/graphql-java-extended-scalars** for more extended types
- 
+
+## META FIELD & Inline Fragment
+- **__typename** is used when the return type might vary (e.g interface with two implementation)
+- inline fragments are fragments within query
+- ```graphql
+    ... on Dog {
+   # Dog fields 
+  }
+  ```
+
+## UNION
+- merging/joining 2 objects into one
+- e.g Hello Object and Book Object
+- see SmartSearchResult
+- see union in collection
+
 ## DISABLING GRAPH[I]QL endpoint
 ```yaml
   dgs:
