@@ -32,6 +32,9 @@
 - see SmartSearchResult
 - see union in collection
 
+## MUTATION 
+- create/add, edit and delete operations
+
 ## DISABLING GRAPH[I]QL endpoint
 ```yaml
   dgs:
