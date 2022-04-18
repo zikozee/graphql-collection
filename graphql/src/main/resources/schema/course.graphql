@@ -35,7 +35,7 @@ type Mutation {
     userLogin(user: UserLoginInput!): UserResponse!
     userActivation(user: UserActivationInput!): UserActivationResponse!
     problemCreate(problem: ProblemCreateInput!): ProblemResponse!
-    problemSolution(solution: SolutionCreateInput!): SolutionResponse!
+    problemSolution(newSolution: SolutionCreateInput!): SolutionResponse!
     solutionVote(vote: SolutionVoteInput!): SolutionResponse!
 }
 
@@ -45,7 +45,7 @@ type Subscription {
 
     # stack overflow challenge- subscription
     problemAdded: Problem!
-    solutionViteChanged(solutionId: ID!): Solution!
+    solutionVoteChanged(solutionId: ID!): Solution!
 }
 
 # if the param is not ! (mandatory) use optional
