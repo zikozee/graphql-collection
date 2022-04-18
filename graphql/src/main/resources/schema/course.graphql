@@ -2,6 +2,7 @@ scalar Url
 scalar Date
 scalar NonNegativeInt
 scalar Long
+scalar DateTime
 
 union SmartSearchResult = Hello | Book
 
@@ -13,6 +14,7 @@ type Query {
     mobileApps(mobileAppFilter: MobileAppFilter): [MobileApp]
     pets(petFilter: PetFilter): [Pet]
     smartSearch(keyword: String): [SmartSearchResult]
+    additionalOnRequest: String
 }
 
 
@@ -23,5 +25,9 @@ type Mutation {
     deleteHello(number: Int!): Int
 }
 
+
+type Subscription {
+    randomStock: Stock
+}
 
 # if the param is not ! (mandatory) use optional
