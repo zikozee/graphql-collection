@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     implementation(platform('com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:4.1.0'))
     implementation 'com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter'
@@ -28,7 +29,10 @@ dependencies {
     implementation 'com.netflix.graphql.dgs:graphql-dgs-subscriptions-websockets-autoconfigure'
 
     implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation 'org.ocpsoft.prettytime:prettytime:5.0.2.Final'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
 
+    runtimeOnly 'org.postgresql:postgresql'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
