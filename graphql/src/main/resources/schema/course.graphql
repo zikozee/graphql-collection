@@ -15,6 +15,12 @@ type Query {
     pets(petFilter: PetFilter): [Pet]
     smartSearch(keyword: String): [SmartSearchResult]
     additionalOnRequest: String
+
+    # stack overflow challenge- query
+    me: User!
+    problemLatestList: [Problem!]
+    itemSearch(filter: SearchItemFilter): [SearchableItem]
+    problemDetail(id: ID!): Problem!
 }
 
 
@@ -23,11 +29,23 @@ type Mutation {
     replaceHelloText(helloInput: HelloInput!): [Hello]
 #    replaceHelloText(number: Int!, newText: String!): [Hello]
     deleteHello(number: Int!): Int
+
+    # stack overflow challenge- mutation
+    userCreate(user: UserCreateInput!): UserResponse!
+    userLogin(user: UserLoginInput!): UserResponse!
+    userActivation(user: UserActivationInput!): UserActivationResponse!
+    problemCreate(problem: ProblemCreateInput!): ProblemResponse!
+    problemSolution(solution: SolutionCreateInput!): SolutionResponse!
+    solutionVote(vote: SolutionVoteInput!): SolutionResponse!
 }
 
 
 type Subscription {
     randomStock: Stock
+
+    # stack overflow challenge- subscription
+    problemAdded: Problem!
+    solutionViteChanged(solutionId: ID!): Solution!
 }
 
 # if the param is not ! (mandatory) use optional
