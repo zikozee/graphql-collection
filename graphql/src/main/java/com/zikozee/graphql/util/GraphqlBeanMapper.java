@@ -9,8 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.time.ZoneOffset;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -90,5 +89,30 @@ public class GraphqlBeanMapper {
                 .authToken(original.getAuthToken())
                 .expiryTime(expiryDateTime)
                 .build();
+    }
+
+    public static Problemz mapToEntity(ProblemCreateInput original, Userz author){
+        var result = new Problemz();
+
+        result.setContent(original.getContent());
+        result.setCreatedBy(author);
+        result.setId(UUID.randomUUID());
+        result.setSolutions(Collections.emptyList());
+        result.setTags(String.join(",", original.getTags()));
+        result.setTitle(original.getTitle());
+
+        return result;
+    }
+
+    public static Solutionz mapToEntity(SolutionCreateInput original, Userz author, Problemz problemz){
+        var result = new Solutionz();
+
+        result.setCategory(original.getCategory().name());
+        result.setContent(original.getContent());
+        result.setCreatedBy(author);
+        result.setProblemz(problemz);
+        result.setId(UUID.randomUUID());
+
+        return result;
     }
 }

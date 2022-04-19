@@ -72,7 +72,7 @@
     ],
     "data": null
   }
-```
+  ```
 
 
 ### TEST
@@ -103,7 +103,7 @@
 ```graphql
  query books {
     books(author: ""){   # you can add author name or skip
-        title
+        title # response start
         creator: author {
             name
             originCountry
@@ -112,7 +112,16 @@
             year
             printedEdition
             releasedCountry
-        }
+        }   #response end
+    }
+}
+
+mutation createSolution($newSolution: SolutionCreateInput!) {
+    solutionCreate(newSolution: $newSolution) { # request
+        solution {  # response start
+            id
+            prettyCreatedDateTime
+        } # response end
     }
 }
 ```

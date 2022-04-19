@@ -35,7 +35,7 @@ type Mutation {
     userLogin(user: UserLoginInput!): UserResponse!
     userActivation(user: UserActivationInput!): UserActivationResponse!
     problemCreate(problem: ProblemCreateInput!): ProblemResponse!
-    problemSolution(newSolution: SolutionCreateInput!): SolutionResponse!
+    solutionCreate(newSolution: SolutionCreateInput!): SolutionResponse!
     solutionVote(vote: SolutionVoteInput!): SolutionResponse!
 }
 

@@ -2,11 +2,14 @@ package com.zikozee.graphql.comonent.problemz;
 
 import com.netflix.graphql.dgs.*;
 import com.netflix.graphql.dgs.exceptions.DgsBadRequestException;
+import com.zikozee.graphql.exception.ProblemzAuthenticationException;
 import com.zikozee.graphql.generated.DgsConstants;
 import com.zikozee.graphql.generated.types.Problem;
 import com.zikozee.graphql.generated.types.ProblemCreateInput;
 import com.zikozee.graphql.generated.types.ProblemResponse;
+import com.zikozee.graphql.service.command.ProblemzCommandService;
 import com.zikozee.graphql.service.query.ProblemzQueryService;
+import com.zikozee.graphql.service.query.UserzQueryService;
 import com.zikozee.graphql.util.GraphqlBeanMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,6 +31,8 @@ import java.util.stream.Collectors;
 public class ProblemDataResolver {
 
     private final ProblemzQueryService queryService;
+    private final ProblemzCommandService problemzCommandService;
+    private final UserzQueryService userzQueryService;
 
     @DgsQuery(field = DgsConstants.QUERY.ProblemLatestList)
     public List<Problem> getProblemLatestList(){
@@ -48,7 +53,12 @@ public class ProblemDataResolver {
     @DgsMutation(field = DgsConstants.MUTATION.ProblemCreate)
     public ProblemResponse createProblem(@RequestHeader(name = "authToken") String authToken,
                                          @InputArgument(name = "problem")ProblemCreateInput problemCreateInput){
-        return null;
+        var userz = userzQueryService.findByAuthToken(authToken)
+                .orElseThrow(ProblemzAuthenticationException::new);
+        var problemz = GraphqlBeanMapper.mapToEntity(problemCreateInput, userz);
+        var created = problemzCommandService.createProblemz(problemz);
+
+        return ProblemResponse.newBuilder().problem(GraphqlBeanMapper.mapToGraphql(created)).build();
     }
 
     @DgsSubscription(field = DgsConstants.SUBSCRIPTION.ProblemAdded)
