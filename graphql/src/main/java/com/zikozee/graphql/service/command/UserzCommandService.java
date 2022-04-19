@@ -1,5 +1,6 @@
 package com.zikozee.graphql.service.command;
 
+import com.zikozee.graphql.datasource.problemz.entity.Userz;
 import com.zikozee.graphql.datasource.problemz.entity.UserzToken;
 import com.zikozee.graphql.datasource.problemz.repository.UserzRepository;
 import com.zikozee.graphql.datasource.problemz.repository.UserzTokenRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -51,5 +53,15 @@ public class UserzCommandService {
         userzToken.setExpiryTimestamp(now.plusHours(2));
 
         return userzTokenRepository.save(userzToken);
+    }
+
+    public Userz createUserz(Userz userz){
+        return userzRepository.save(userz);
+    }
+
+    public Optional<Userz> activateUser(String username, boolean isActive){
+        userzRepository.activateUser(username, isActive);
+
+        return userzRepository.findByUsernameIgnoreCase(username);
     }
 }

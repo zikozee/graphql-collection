@@ -54,6 +54,7 @@ input UserCreateInput {
     username: String!
     email: String!
     password: String!
+    displayName: String!
     avatar: Url
 }
 

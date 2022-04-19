@@ -39,7 +39,10 @@ public class UserDataResolver {
 
     @DgsMutation(field = DgsConstants.MUTATION.UserCreate)
     public UserResponse createUser(@InputArgument(name = "user")UserCreateInput userCreateInput){
-        return null;
+        var userz = GraphqlBeanMapper.mapToEntity(userCreateInput);
+        var saved = userzCommandService.createUserz(userz);
+
+       return UserResponse.newBuilder().user(GraphqlBeanMapper.mapToGraphql(saved)).build();
     }
 
     @DgsMutation(field = DgsConstants.MUTATION.UserLogin)
@@ -53,7 +56,11 @@ public class UserDataResolver {
 
     @DgsMutation(field = DgsConstants.MUTATION.UserActivation)
     public UserActivationResponse userActivation(@InputArgument(name = "user") UserActivationInput userActivationInput){
-        return null;
+        var updated = userzCommandService
+                .activateUser(userActivationInput.getUsername(), userActivationInput.getActive())
+                .orElseThrow(DgsEntityNotFoundException::new);
+
+        return UserActivationResponse.newBuilder().isActive(updated.isActive()).build();
     }
 
 
