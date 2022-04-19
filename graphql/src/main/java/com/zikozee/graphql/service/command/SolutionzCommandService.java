@@ -6,6 +6,8 @@ import com.zikozee.graphql.datasource.problemz.repository.ProblemzRepository;
 import com.zikozee.graphql.datasource.problemz.repository.SolutionzRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SolutionzCommandService {
 
+    private Sinks.Many<Solutionz> solutionzSinks = Sinks.many().multicast().onBackpressureBuffer();
     private final SolutionzRepository solutionzRepository;
 
 
@@ -30,12 +33,26 @@ public class SolutionzCommandService {
     public Optional<Solutionz> voteBad(UUID solutionzId){
         solutionzRepository.addVoteBadCount(solutionzId);
 
-        return solutionzRepository.findById(solutionzId);
+        var updated =  solutionzRepository.findById(solutionzId);
+
+        if(updated.isPresent()){
+            solutionzSinks.tryEmitNext(updated.get());
+        }
+        return updated;
     }
 
     public Optional<Solutionz> voteGood(UUID solutionzId){
         solutionzRepository.addVoteGoodCount(solutionzId);
 
-        return solutionzRepository.findById(solutionzId);
+        var updated =  solutionzRepository.findById(solutionzId);
+
+        if(updated.isPresent()){
+            solutionzSinks.tryEmitNext(updated.get());
+        }
+        return updated;
+    }
+
+    public Flux<Solutionz> solutionzFlux(){
+        return solutionzSinks.asFlux();
     }
 }

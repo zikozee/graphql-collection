@@ -77,6 +77,7 @@ public class SolutionDataResolver {
 
     @DgsSubscription(field = DgsConstants.SUBSCRIPTION.SolutionVoteChanged)
     public Flux<Solution> subscribeSolutionVote(@InputArgument(name = "solutionId") String solutionId) {
-        return null;
+        return solutionzCommandService.solutionzFlux()
+                .map(GraphqlBeanMapper::mapToGraphql);
     }
 }

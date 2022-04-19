@@ -63,6 +63,7 @@ public class ProblemDataResolver {
 
     @DgsSubscription(field = DgsConstants.SUBSCRIPTION.ProblemAdded)
     public Flux<Problem> subscribeProblemAdded(){
-        return null;
+        return problemzCommandService.problemzFlux()
+                .map(GraphqlBeanMapper::mapToGraphql);
     }
 }
