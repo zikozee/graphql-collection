@@ -43,6 +43,38 @@
         enabled: false
 ```
 
+## ERROR HANDLING
+- if no error data has value and errors is null
+- if error, errors has value and data is null
+- we can return custom error message, custom error detail as implemented
+- ```graphql
+     interface GraphQLError {
+        message: String!
+        locations: [Location]
+        path: [String]
+        extensions: TypedError
+    }   
+  ```
+- ```json
+      {
+    "errors": [
+      {
+        "message": "java.lang.IllegalArgumentException: Invalid credential",
+        "locations": [],
+        "path": [
+          "userLogin"
+        ],
+        "extensions": {
+          "errorType": "INTERNAL"
+          "errorDetail": null
+        }
+      }
+    ],
+    "data": null
+  }
+```
+
+
 ### TEST
 - GraphQL client: localhost:[port]/graphiql
 - GraphQL service: localhost:[port]/graphql    #### if using **Altair Tool**

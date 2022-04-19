@@ -22,11 +22,11 @@ import java.util.UUID;
 public class UserzToken {
 
     @Id
-    private UUID id;
+    private UUID userId;
     private String authToken;
 
     @CreationTimestamp
-    private LocalDateTime creationTimestamp;
+    private LocalDateTime createTimestamp;
 
     private LocalDateTime expiryTimestamp;
 }

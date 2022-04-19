@@ -3,6 +3,7 @@ package com.zikozee.graphql.comonent.problemz;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
+import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import com.zikozee.graphql.generated.DgsConstants;
 import com.zikozee.graphql.generated.types.SearchItemFilter;
 import com.zikozee.graphql.generated.types.SearchableItem;
@@ -47,6 +48,8 @@ public class ItemSearchDataResolver {
                 .stream().map(GraphqlBeanMapper::mapToGraphql).collect(Collectors.toList());
 
         searchableItems.addAll(solutionzByKeyword);
+
+        if(searchableItems.isEmpty()) throw new DgsEntityNotFoundException("No item with keyword " + keyword);
 
         searchableItems.sort(Comparator.comparing(SearchableItem::getCreatedDateTime).reversed());
 

@@ -1,6 +1,7 @@
 package com.zikozee.graphql.comonent.problemz;
 
 import com.netflix.graphql.dgs.*;
+import com.netflix.graphql.dgs.exceptions.DgsBadRequestException;
 import com.zikozee.graphql.generated.DgsConstants;
 import com.zikozee.graphql.generated.types.Problem;
 import com.zikozee.graphql.generated.types.ProblemCreateInput;
@@ -40,8 +41,8 @@ public class ProblemDataResolver {
     @DgsQuery(field = DgsConstants.QUERY.ProblemDetail)
     public Problem problemDetail(@InputArgument(name = "id") String id){
         var problemId = UUID.fromString(id);
-        var problemz = queryService.problemzDetail(problemId);
-        return GraphqlBeanMapper.mapToGraphql(problemz.get());
+        var problemz = queryService.problemzDetail(problemId).orElseThrow(DgsBadRequestException::new);
+        return GraphqlBeanMapper.mapToGraphql(problemz);
     }
 
     @DgsMutation(field = DgsConstants.MUTATION.ProblemCreate)
