@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
  */
 
 public class GraphqlBeanMapper {
+
+    private GraphqlBeanMapper(){}
 
     public static final PrettyTime PRETTY_TIME = new PrettyTime();
 
@@ -40,6 +43,7 @@ public class GraphqlBeanMapper {
         var creationDateTime = original.getCreationTimestamp().atOffset(ZONE_OFFSET);
         var author = mapToGraphql(original.getCreatedBy());
         var convertedSolutions = original.getSolutions().stream()
+//                .sorted(Comparator.comparing(Solutionz::getCreationTimestamp).reversed())
                 .map(GraphqlBeanMapper::mapToGraphql)
                 .collect(Collectors.toList());
 

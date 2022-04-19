@@ -5,10 +5,16 @@ import com.zikozee.graphql.generated.DgsConstants;
 import com.zikozee.graphql.generated.types.Problem;
 import com.zikozee.graphql.generated.types.ProblemCreateInput;
 import com.zikozee.graphql.generated.types.ProblemResponse;
+import com.zikozee.graphql.service.query.ProblemzQueryService;
+import com.zikozee.graphql.util.GraphqlBeanMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestHeader;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 /**
  * @author: Ezekiel Eromosei
@@ -17,16 +23,25 @@ import java.util.List;
 
 
 @DgsComponent
+@RequiredArgsConstructor
 public class ProblemDataResolver {
+
+    private final ProblemzQueryService queryService;
 
     @DgsQuery(field = DgsConstants.QUERY.ProblemLatestList)
     public List<Problem> getProblemLatestList(){
-        return null;
+
+        return queryService.problemzLatestList().stream()
+                .map(GraphqlBeanMapper::mapToGraphql)
+                .collect(Collectors.toList());
+
     }
 
     @DgsQuery(field = DgsConstants.QUERY.ProblemDetail)
     public Problem problemDetail(@InputArgument(name = "id") String id){
-        return null;
+        var problemId = UUID.fromString(id);
+        var problemz = queryService.problemzDetail(problemId);
+        return GraphqlBeanMapper.mapToGraphql(problemz.get());
     }
 
     @DgsMutation(field = DgsConstants.MUTATION.ProblemCreate)

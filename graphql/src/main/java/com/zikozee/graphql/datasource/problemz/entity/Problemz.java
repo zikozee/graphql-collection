@@ -32,6 +32,7 @@ public class Problemz {
     private String tags;
 
     @OneToMany(mappedBy = "problemz")
+    @OrderBy("creationTimestamp desc")  //this can be used to order Solution entity directly from DB level
     private List<Solutionz> solutions;
 
     @ManyToOne
