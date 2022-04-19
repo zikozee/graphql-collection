@@ -33,4 +33,5 @@ public class Userz {
     private LocalDateTime creationTimestamp;
     private String displayName;
     private boolean active;
+    private String userRole;
 }

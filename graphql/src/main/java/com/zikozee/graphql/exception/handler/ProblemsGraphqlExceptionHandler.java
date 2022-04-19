@@ -5,6 +5,7 @@ import com.netflix.graphql.types.errors.ErrorType;
 import com.netflix.graphql.types.errors.TypedGraphQLError;
 import com.zikozee.graphql.datasource.problemz.entity.Problemz;
 import com.zikozee.graphql.exception.ProblemzAuthenticationException;
+import com.zikozee.graphql.exception.ProblemzPermissionException;
 import graphql.execution.DataFetcherExceptionHandler;
 import graphql.execution.DataFetcherExceptionHandlerParameters;
 import graphql.execution.DataFetcherExceptionHandlerResult;
@@ -30,6 +31,14 @@ public class ProblemsGraphqlExceptionHandler implements DataFetcherExceptionHand
                     .path(handlerParameters.getPath())
 //                    .errorType(ErrorType.UNAUTHENTICATED) // returning enum
                     .errorDetail(new ProblemErrorDetail()) // returning custom message
+                    .build();
+
+            return DataFetcherExceptionHandlerResult.newResult().error(graphqlError).build();
+        } else if(exception instanceof ProblemzPermissionException){
+            var graphqlError = TypedGraphQLError.newBuilder()
+                    .message(exception.getMessage())
+                    .path(handlerParameters.getPath())
+                    .errorType(ErrorType.PERMISSION_DENIED) // returning enum
                     .build();
 
             return DataFetcherExceptionHandlerResult.newResult().error(graphqlError).build();

@@ -124,6 +124,7 @@ public class GraphqlBeanMapper {
         result.setUsername(original.getUsername());
         result.setEmail(original.getEmail());
         result.setDisplayName(original.getDisplayName());
+        result.setUserRole(original.getUserRole());
         result.setAvatar(original.getAvatar());
         result.setActive(true);
 

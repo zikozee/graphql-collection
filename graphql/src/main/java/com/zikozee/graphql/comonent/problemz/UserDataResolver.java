@@ -7,13 +7,16 @@ import com.netflix.graphql.dgs.InputArgument;
 import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import com.zikozee.graphql.datasource.problemz.entity.Userz;
 import com.zikozee.graphql.exception.ProblemzAuthenticationException;
+import com.zikozee.graphql.exception.ProblemzPermissionException;
 import com.zikozee.graphql.generated.DgsConstants;
 import com.zikozee.graphql.generated.types.*;
 import com.zikozee.graphql.service.command.UserzCommandService;
 import com.zikozee.graphql.service.query.UserzQueryService;
 import com.zikozee.graphql.util.GraphqlBeanMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Optional;
@@ -37,8 +40,17 @@ public class UserDataResolver {
         return GraphqlBeanMapper.mapToGraphql(userz);
     }
 
+    @Secured(value = "ROLE_ADMIN")
     @DgsMutation(field = DgsConstants.MUTATION.UserCreate)
-    public UserResponse createUser(@InputArgument(name = "user")UserCreateInput userCreateInput){
+    public UserResponse createUser(
+            @InputArgument(name = "user")UserCreateInput userCreateInput){
+//            @RequestHeader(name = "authToken") String authToken){
+
+//        var userAuth = userzQueryService.findByAuthToken(authToken)
+//                .orElseThrow(ProblemzAuthenticationException::new);
+//
+//        if(!StringUtils.equals(userAuth.getUserRole(), "ROLE_ADMIN")) throw new ProblemzPermissionException();
+
         var userz = GraphqlBeanMapper.mapToEntity(userCreateInput);
         var saved = userzCommandService.createUserz(userz);
 
@@ -54,8 +66,18 @@ public class UserDataResolver {
         return UserResponse.newBuilder().authToken(userAuthToken).user(userInfo).build();
     }
 
+    @Secured(value = "ROLE_ADMIN")
     @DgsMutation(field = DgsConstants.MUTATION.UserActivation)
-    public UserActivationResponse userActivation(@InputArgument(name = "user") UserActivationInput userActivationInput){
+    public UserActivationResponse userActivation(
+            @InputArgument(name = "user") UserActivationInput userActivationInput){
+//            @RequestHeader(name = "authToken") String authToken){
+
+//        var userAuth = userzQueryService.findByAuthToken(authToken)
+//                .orElseThrow(ProblemzAuthenticationException::new);
+//
+//
+//        if(!StringUtils.equals(userAuth.getUserRole(), "ROLE_ADMIN")) throw new ProblemzPermissionException();
+
         var updated = userzCommandService
                 .activateUser(userActivationInput.getUsername(), userActivationInput.getActive())
                 .orElseThrow(DgsEntityNotFoundException::new);
