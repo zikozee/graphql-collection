@@ -83,7 +83,7 @@ public class StarwarsGraphqlClient {
 
     public List<PlanetResponse> allPlanets(){
         return getGraphQlResponse("allPlanets", null, null)
-                .extractValueAsObject("allPlanets.planets", new TypeRef<List<PlanetResponse>>() {}); //TODO INFO: NOTE THIS NOTE TypeReference
+                .extractValueAsObject("allPlanets.planets", new TypeRef<List<PlanetResponse>>() {}); //TODO INFO: NOTE THIS NOT TypeReference
     }
 
     public StarshipResponse oneStarshipFixed(){

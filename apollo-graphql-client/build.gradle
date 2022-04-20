@@ -1,0 +1,29 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.6'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+
+    //apollo plugin
+    id 'com.apollographql.apollo' version '2.5.9'
+}
+
+group = 'com.zikozee'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // apollo dependencies
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.apollographql.apollo:apollo-runtime:2.5.9'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
