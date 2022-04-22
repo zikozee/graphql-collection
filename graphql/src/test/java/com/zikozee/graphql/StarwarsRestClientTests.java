@@ -4,6 +4,8 @@ import com.zikozee.graphql.client.StarwarsRestClient;
 import com.zikozee.graphql.client.request.GraphqlRestRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class StarwarsRestClientTests {
+    private Logger logger = LoggerFactory.getLogger(StarwarsRestClientTests.class);
 
     @Autowired
     private StarwarsRestClient client;
@@ -75,6 +78,7 @@ class StarwarsRestClientTests {
     @Test
     void testOneFilm_Right() throws Exception {
         var result = client.oneFilm("1");
+        logger.info("RESULT {}", result);
         assertNotNull(result);
         assertNotNull(result.getTitle());
     }

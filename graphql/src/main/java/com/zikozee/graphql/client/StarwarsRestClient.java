@@ -86,13 +86,14 @@ public class StarwarsRestClient {
     }
 
     public FilmResponse oneFilm(String filmId) throws JsonProcessingException {
-        var query = "query oneFilm($filmId: ID!) {\n" +
-                "  film(filmID: $filmId) {\n" +
-                "    title\n" +
-                "    director\n" +
-                "    releaseDate\n" +
-                "  }\n" +
-                "}";
+//        var query = "query oneFilm($filmId: ID!) {\n" +
+//                "  film(filmID: $filmId) {\n" +
+//                "    title\n" +
+//                "    director\n" +
+//                "    releaseDate\n" +
+//                "  }\n" +
+//                "}";
+        var query = "query oneFilm($filmId:ID!){film(filmID:$filmId){title director releaseDate}}";
 
         var body = new GraphqlRestRequest();
         body.setQuery(query);
